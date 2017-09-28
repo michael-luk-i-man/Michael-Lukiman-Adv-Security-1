@@ -1,0 +1,4 @@
+Psychological acceptability can be in the form of being able to use same passwords across sites (a new site won’t require you to abide by any overly specific rules). Although it is easier and more acceptable to use the same password, if one password is compromised and that same password is used on other platforms, then in the real-world, the user’s accounts on all these platforms can be compromised at once. 
+
+Inversely, psychological acceptability is important to consider in the real world when it comes to the other side of requirements: if requirements are too stringent, users will not take the effort to remember overly complicated or varied passcodes. Thus, many users in practice, although clearly discouraged, write their passwords on a master sheet or note by their workspace. This is a real-world attack that of course shouldn’t work, but does. 
+
