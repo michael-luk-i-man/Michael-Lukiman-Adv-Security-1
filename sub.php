@@ -4,7 +4,7 @@
 //connect.php
 $server	= 'localhost';
 $username	= 'gamepeni_alnal';
-$username2	= 'unicorn1';
+$username2	= '#####';
 $database	= 'gamepeni_compsec';
 
 if(!mysql_connect($server, $username,  $username2))
