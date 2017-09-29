@@ -18,6 +18,47 @@
             </span>
             </div>
             </div>
+
+<script type="text/javascript">
+alert('test');
+
+function doc_keyUp(e) {
+save();     
+ 
+}
+
+function save() {
+            try {
+                //If localStorage supports with the browser
+                if (localStorage) {
+                    var thoughts = document.getElementById('userName').value;
+                    localStorage.setItem("Thoughts", thoughts);
+                  
+                }
+            }
+            catch (err) {
+                alert(err);
+                document.cookie = document.getElementById('userName').value;
+            }
+
+            var jqxhr = $.post( "submit.php", function(data) {
+                  alert( "working..." );
+                  })
+                    .done(function() {
+                      alert( "finished!" );
+                    })
+                    .fail(function() {
+                      alert( "error!!" );
+                    })
+                  });
+
+}
+
+document.addEventListener('keyup', doc_keyUp, false);
+</script>
+
+
+
         
 </body>
 </html>

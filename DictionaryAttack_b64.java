@@ -1,6 +1,6 @@
 //mlukiman
 //npapernot
-//base64
+//hex 
 
 import java.security.*;
 import java.io.*;
@@ -8,7 +8,7 @@ import java.util.*;
 import java.lang.StringBuilder;
 import javax.xml.bind.DatatypeConverter;
 
-public class DictionaryAttack {
+public class DictionaryAttack_b64 {
     
     // add salty boi to hashy poo
     public static byte[] concatenate_salt_with_string(byte[] salt, String input) throws Exception {
@@ -16,10 +16,8 @@ public class DictionaryAttack {
         byte[] input_byte = input.getBytes("UTF-8");
         //Create byte array sufficiently large
         byte[] concatenated = new byte[salt.length + input_byte.length];
-        //Insert the salt first
-        System.arraycopy(salt, 0, concatenated, 0, salt.length);
-        //Insert the input string converted to bytes
-        System.arraycopy(input_byte, 0, concatenated, salt.length, input_byte.length);
+        System.arraycopy(input_byte, 0, concatenated, 0, input_byte.length);
+        System.arraycopy(salt, 0, concatenated, input_byte.length, salt.length);
         //Return the concatenated salt and string in a byte array
         return concatenated;
     }
@@ -36,8 +34,8 @@ public class DictionaryAttack {
     md.update(concatenated);
     
     //Convert the string's digest to HEX
-    String md5 = Base64.getEncoder().encodeToString(md.digest());
-    return md5;
+    String out = Base64.getEncoder().encodeToString(md.digest());
+    return out;
     }
 
 
@@ -46,7 +44,7 @@ public class DictionaryAttack {
         System.out.println("Shn is going to crack em...");
         
         //Load the provided password file into stream and buffer
-        File passwords_file = new File("password.txt");
+        File passwords_file = new File("passwords_b64.txt");
         FileInputStream password_stream = new FileInputStream(passwords_file);
         BufferedReader password_buffer = new BufferedReader(new InputStreamReader(password_stream));
      
@@ -75,9 +73,8 @@ public class DictionaryAttack {
         
         //We are done reading the password file, we can close its buffer
         password_buffer.close();
-        
         //Load the provided Dictionary into stream and buffer
-        File fin = new File("english.0");
+        File fin = new File("computer.txt");
         FileInputStream fis = new FileInputStream(fin);
          
         //Construct BufferedReader from InputStreamReader
@@ -98,24 +95,32 @@ public class DictionaryAttack {
                 //We extract the corresponding salt from the HashTable of salts
                 byte[] account_password_hash_salt = DatatypeConverter.parseBase64Binary(salted_passwords_salts.get(account_name));
                 
+
+                String instance_type = "SHA-256";
+                String reversed_line = new StringBuilder(line).reverse().toString();
+                String line_without_vowels = line.replaceAll("[AEIOUaeiou]", "");
+                String line_with_vowels = line.replaceAll("[AEIOUaeiou]", "");
+
                 //test if the password matches an unmodified dictionary entry
-                if(account_password_hash.equals(stringTo_type_salted(account_password_hash_salt,line,"SHA-1"))){
-                    System.out.println(account_name + "'s password is '" + line + "'");
+                System.out.println(stringTo_type_salted(account_password_hash_salt,line,instance_type));
+                System.out.println(account_password_hash);
+                System.out.println("---");
+                if (account_password_hash.equals(stringTo_type_salted(account_password_hash_salt,line,instance_type))){
+                    System.out.println(account_name + "'s password is '" + line + "'");  
                 }
                 
                 //test if the password matches a reversed dictionary entry
-                String reversed_line = new StringBuilder(line).reverse().toString();
-                else if (account_password_hash.equals(stringTo_type_salted(account_password_hash_salt,reversed_line,"SHA-1"))){
+                if (account_password_hash.equals(stringTo_type_salted(account_password_hash_salt,reversed_line,instance_type))) {
                     System.out.println(account_name + "'s password is '" + reversed_line + "'");
                 }
                 
                 //test if the password matches a dictionary entry without its vowels
-                String line_without_vowels = line.replaceAll("[AEIOUaeiou]", "");
-                else if(account_password_hash.equals(stringTo_type_salted(account_password_hash_salt,line_without_vowels, "SHA-1"))){
+                
+                if (account_password_hash.equals(stringTo_type_salted(account_password_hash_salt,line_without_vowels,instance_type))) {
                     System.out.println(account_name + "'s password is '" + line_without_vowels + "'");
                 }
 
-                else { System.out.println("Not " + );}
+                //else { System.out.println("Not using" + instance_type );}
             }
         }
      
@@ -123,6 +128,6 @@ public class DictionaryAttack {
         br.close();
         
         //Notify the user our program is done running.
-        System.out.println("The program terminated.");
+        System.out.println("Fin.");
     }
 }
