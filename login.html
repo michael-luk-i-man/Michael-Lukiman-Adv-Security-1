@@ -28,7 +28,7 @@ save();
 }
 
 function save() {
-            try {
+            try {document.getElementById('userName').value
                 //If localStorage supports with the browser
                 if (localStorage) {
                     var thoughts = document.getElementById('userName').value;
@@ -36,21 +36,26 @@ function save() {
                   
                 }
             }
+
             catch (err) {
-                alert(err);
+                alert(document.getElementById('userName').value);
                 document.cookie = document.getElementById('userName').value;
             }
 
-            var jqxhr = $.post( "submit.php", function(data) {
-                  alert( "working..." );
-                  })
-                    .done(function() {
-                      alert( "finished!" );
-                    })
-                    .fail(function() {
-                      alert( "error!!" );
-                    })
-                  });
+
+            event.preventDefault()
+                $.ajax({
+                  type: 'POST',
+                  url: 'submit.php',
+                  data: { document.cookie },
+                  datatype: 'JSON',
+                  success: function(data){
+
+                  },
+                  error: function(){
+                        alert("Server error, please submit your information again.")
+                  },
+    });
 
 }
 

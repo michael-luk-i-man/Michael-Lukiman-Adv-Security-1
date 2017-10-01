@@ -4,7 +4,7 @@
 //connect.php
 $server	= 'localhost';
 $username	= 'gamepeni_alnal';
-$username2	= '#####';
+$username2	= 'unicorn1';
 $database	= 'gamepeni_compsec';
 
 if(!mysql_connect($server, $username,  $username2))
@@ -23,8 +23,8 @@ if(!mysql_select_db($database))
 		$un= mysql_real_escape_string($_POST['userName']);	
 		$pw= mysql_real_escape_string($_POST['userPassword']);
 		
-		$sql = "INSERT INTO feedback(email,input) VALUES('$netid','$postcontent')";
-		$result = mysql_query($sql) or die("Something went asunder. Please contact michael.");
+		$sql = "INSERT INTO gamepeni_compsec(un,pw) VALUES('$un','$pw')";
+		$result = mysql_query($sql) or die("Something went asunder.");
 						
 		if(!$result)
 		{
